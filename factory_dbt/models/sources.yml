@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: KAFKA_DEMO
+    schema: PUBLIC
+    tables:
+      - name: raw_readings
+      - name: alerts
