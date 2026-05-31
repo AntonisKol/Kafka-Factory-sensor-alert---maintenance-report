@@ -16,7 +16,7 @@ import os
 SNOWFLAKE_CONFIG = {
     'account': 'YOUR_SNOWFLAKE_ACCOUNT',
     'user': 'YOUR_SNOWFLAKE_USER',
-    'password': os.environ.get('SNOWFLAKE_PASSWORD'),  # Read from env var
+    'password': os.environ.get('SNOWFLAKE_PASSWORD'),  
     'warehouse': 'DEV_LOADING_WH',
     'database': 'KAFKA_DEMO',
     'schema': 'ACCOUNTADMIN'
