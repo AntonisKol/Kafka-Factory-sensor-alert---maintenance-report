@@ -1,7 +1,5 @@
 """
-File: snowflake_loader.py
-
-Task: Load raw JSON and flagged Parquet to Snowflake
+- Load raw JSON and flagged Parquet to Snowflake
 - raw_readings table: raw JSON from Kafka consumer
 - alerts table: flagged anomalies from PySpark
 """

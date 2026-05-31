@@ -18,3 +18,8 @@ SELECT
     ROUND(100.0 * (total_readings - COALESCE(anomaly_readings, 0)) / total_readings, 2) as uptime_pct
 FROM readings_with_alerts
 ORDER BY uptime_pct DESC
+
+-- Calculate uptime % per machine
+-- Join raw readings with alerts to find anomalies
+-- Count total readings and anomaly readings
+-- Calculate (total - anomalies) / total * 100
