@@ -25,10 +25,10 @@ print(f"Read {df.count()} records from {latest_file}")
 # Convert timestamp string to timestamp type
 df = df.withColumn('timestamp', col('timestamp').cast('timestamp'))
 
-# Define window: 5-minute rolling average per sensor
+# Define window
 window_spec = Window.partitionBy('machine_id', 'metric_name') \
-    .orderBy('timestamp') \
-    .rangeBetween(-300, 0)
+    .orderBy(col('timestamp')) \
+    .rowsBetween(-100, 0)  # Last 100 rows (approximately 5 min)
 
 # Compute rolling average
 df_with_rolling = df.withColumn(

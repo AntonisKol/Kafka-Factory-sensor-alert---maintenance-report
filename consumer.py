@@ -20,7 +20,6 @@ def poll_kafka_to_json():
     """
     Poll Kafka broker for all available messages in factory-sensors topic.
     Save as JSON.
-    
     Called by: Airflow task_1 every 15 minutes
     """
     
@@ -47,7 +46,7 @@ def poll_kafka_to_json():
             msg_batch = consumer.poll(timeout_ms=5000, max_records=1000)
             
             if msg_batch:
-                for topic_partition, records in msg_batch.items():
+                for records in msg_batch.items():
                     for record in records:
                         readings.append(record.value)
                         
