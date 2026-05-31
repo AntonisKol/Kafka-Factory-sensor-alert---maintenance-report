@@ -22,10 +22,10 @@ SNOWFLAKE_CONFIG = {
     'role': 'ACCOUNTADMIN'
 }
 
-# Email config (update these)
-EMAIL_SENDER = 'your_email@gmail.com'
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')  # Set as env var
-EMAIL_RECIPIENT = 'recipient@example.com'
+
+EMAIL_SENDER = 'antonis.colovos@gmail.com'
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_RECIPIENT = 'antonisk@gmx.net'
 
 def get_alert_summary():
     """Get top alert anomalies from dbt model"""
