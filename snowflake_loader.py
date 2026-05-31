@@ -11,12 +11,12 @@ import json
 import pandas as pd
 import glob
 from datetime import datetime
-
+import os
 # Snowflake credentials
 SNOWFLAKE_CONFIG = {
     'account': 'GCWFKTK-JR15161',
     'user': 'ANTONIS',
-    'password': 'Fourwheeldrive1#',
+    'password': os.environ.get('SNOWFLAKE_PASSWORD'),  # Read from env var
     'warehouse': 'DEV_LOADING_WH',
     'database': 'KAFKA_DEMO',
     'schema': 'ACCOUNTADMIN'
