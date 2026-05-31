@@ -1,0 +1,33 @@
+[0m21:55:40.036348 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1077a3610>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10783cb10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10783cf10>]}
+
+
+============================== 21:55:40.039662 | b216ad37-0b8f-4916-bb46-5df49afa276b ==============================
+[0m21:55:40.039662 [info ] [MainThread]: Running with dbt=1.11.11
+[0m21:55:40.039979 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'no_print': 'None', 'empty': 'None', 'fail_fast': 'False', 'printer_width': '80', 'cache_selected_only': 'False', 'warn_error': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'send_anonymous_usage_stats': 'True', 'log_format': 'default', 'write_json': 'True', 'target_path': 'None', 'log_cache_events': 'False', 'static_parser': 'True', 'invocation_command': 'dbt init factory_dbt', 'introspect': 'True', 'debug': 'False', 'profiles_dir': '/Users/mpe/.dbt', 'version_check': 'True', 'quiet': 'False', 'use_colors': 'True', 'log_path': 'logs', 'indirect_selection': 'eager', 'use_experimental_parser': 'False'}
+[0m21:55:40.049893 [debug] [MainThread]: Starter project path: /opt/homebrew/lib/python3.11/site-packages/dbt/include/starter_project
+[0m21:55:40.054438 [info ] [MainThread]: 
+Your new dbt project "factory_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m21:55:40.054695 [info ] [MainThread]: Setting up your profile.
+[0m21:55:53.044189 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m21:55:53.044499 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m21:55:53.044666 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m21:57:26.814575 [info ] [MainThread]: Profile factory_dbt written to /Users/mpe/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m21:57:26.822382 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 106.82954, "process_in_blocks": "0", "process_kernel_time": 1.386435, "process_mem_max_rss": "189448192", "process_out_blocks": "0", "process_user_time": 1.871162}
+[0m21:57:26.825749 [debug] [MainThread]: Command `dbt init` succeeded at 21:57:26.825481 after 106.83 seconds
+[0m21:57:26.826879 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1003ce690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1077a3590>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1075f1410>]}
+[0m21:57:26.827551 [debug] [MainThread]: Flushing usage events
+[0m21:57:27.375643 [debug] [MainThread]: An error was encountered while trying to flush usage events
