@@ -22,9 +22,9 @@ SNOWFLAKE_CONFIG = {
     'role': 'ACCOUNTADMIN'
 }
 
-# Email config (update these)
+
 EMAIL_SENDER = 'sender@example.com'
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')  # Set as env var
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_RECIPIENT = 'recipient@example.com'
 
 def get_alert_summary():
