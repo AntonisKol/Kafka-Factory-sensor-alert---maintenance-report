@@ -32,7 +32,7 @@ def send_report():
     main()
 
 task_dbt = BashOperator(
-    task_id='run_dbt',
+    task_id='run_dbt', # ← dbt connects to Snowflake and runs all models to refresh data for the report
     bash_command='cd /home/user/Desktop/Iron\ Hack/Kafka\ Factory\ sensor\ alert\ -\ maintenance\ report/factory_dbt && dbt run',
     dag=dag
 )

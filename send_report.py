@@ -28,7 +28,7 @@ EMAIL_RECIPIENT = 'recipient@example.com'
 
 def get_alert_summary():
     """Get top alert anomalies from dbt model"""
-    conn = snowflake.connector.connect(**SNOWFLAKE_CONFIG)
+    conn = snowflake.connector.connect(**SNOWFLAKE_CONFIG) # ← PULLS from Snowflake
     cursor = conn.cursor()
     
     cursor.execute("""

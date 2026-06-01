@@ -57,7 +57,7 @@ while time.time() - start_time < 20:
     print(f"\r[{elapsed:5.1f}s] Sent {message_count:4d} messages (ETA: {remaining:5.1f}s)", end='', flush=True)
     time.sleep(1)
 
-producer.flush()
+producer.flush() # <- Ensure all messages are sent before closing
 producer.close()
 
 elapsed_total = time.time() - start_time
