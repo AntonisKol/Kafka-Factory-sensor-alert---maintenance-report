@@ -30,7 +30,6 @@ window_spec = Window.partitionBy('machine_id', 'metric_name') \
     .orderBy(col('timestamp')) \
     .rowsBetween(-100, 0)  # Last 100 rows (approximately 5 min)
 
-# Compute rolling average
 df_with_rolling = df.withColumn(
     'rolling_avg_5min',
     avg('value').over(window_spec)

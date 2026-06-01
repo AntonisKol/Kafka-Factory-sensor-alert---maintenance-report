@@ -11,7 +11,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Snowflake config
 SNOWFLAKE_CONFIG = {
     'account': 'YOUR_SNOWFLAKE_ACCOUNT',
     'user': 'YOUR_SNOWFLAKE_USER',
