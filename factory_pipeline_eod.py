@@ -43,5 +43,4 @@ task_email = PythonOperator(
     dag=dag
 )
 
-# Define dependencies: dbt runs first, then email
 task_dbt >> task_email

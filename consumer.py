@@ -1,5 +1,4 @@
 """
-
 Purpose: Batch consumer that polls Kafka topic every 15 minutes (triggered by Airflow)
 Output: JSON files (human-readable) for Spark processing
 

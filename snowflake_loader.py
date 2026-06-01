@@ -10,7 +10,7 @@ import pandas as pd
 import glob
 from datetime import datetime
 import os
-# Snowflake credentials
+
 SNOWFLAKE_CONFIG = {
     'account': 'GCWFKTK-JR15161',
     'user': 'ANTONIS',
