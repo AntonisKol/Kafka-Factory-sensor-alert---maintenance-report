@@ -1,10 +1,3 @@
-"""
-Purpose: Batch consumer that polls Kafka topic every 15 minutes (triggered by Airflow)
-Output: JSON files (human-readable) for Spark processing
-
-This is called by Airflow task_1 in factory_pipeline.py
-"""
-
 from kafka import KafkaConsumer
 import json
 import pandas as pd
@@ -16,19 +9,13 @@ logger = logging.getLogger(__name__)
 
 
 def poll_kafka_to_json():
-    """
-    Poll Kafka broker for all available messages in factory-sensors topic.
-    Save as JSON.
-    Called by: Airflow task_1 every 15 minutes
-    """
-    
     consumer = KafkaConsumer(
         'factory-sensors',
         bootstrap_servers=['localhost:9092'],
         group_id='factory-batch-consumer',
         auto_offset_reset='latest',
         value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-        session_timeout_ms=30000,
+        session_timeout_ms=30000, # <- These are defensive timeouts - safeguards (in case of network issues or broker unavailability)
         request_timeout_ms=60000
     )
     

@@ -22,10 +22,10 @@ df = spark.read.json(latest_file)
 
 print(f"Read {df.count()} records from {latest_file}")
 
-# Convert timestamp string to timestamp type
+# Converted timestamp string to timestamp type because Data from Kafka arrives as strings
 df = df.withColumn('timestamp', col('timestamp').cast('timestamp'))
 
-# Define window
+# Defined window that separates data into independent groups
 window_spec = Window.partitionBy('machine_id', 'metric_name') \
     .orderBy(col('timestamp')) \
     .rowsBetween(-100, 0)  # Last 100 rows (approximately 5 min)
