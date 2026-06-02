@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 
-load_dotenv()
+load_dotenv("/Users/mpe/Desktop/Iron Hack/Kafka Factory sensor alert - maintenance report/.env")
 
 SNOWFLAKE_CONFIG = {
     'account': os.getenv('SNOWFLAKE_ACCOUNT'),
