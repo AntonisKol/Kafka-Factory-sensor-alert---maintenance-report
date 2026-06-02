@@ -50,7 +50,7 @@ def poll_kafka_to_json():
         # Create timestamp for file naming
         timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
         
-        # Save as JSON
+    
         json_output_path = f'/tmp/raw_readings_{timestamp}.json'
         with open(json_output_path, 'w') as f:
             for reading in readings:

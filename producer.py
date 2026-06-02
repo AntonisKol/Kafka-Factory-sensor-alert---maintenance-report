@@ -22,6 +22,7 @@ def generate_reading():
         'pressure': random.uniform(12, 28)
     }
     
+    # inject random anomalies into sensor data
     if random.random() < 0.05:
         metric = random.choice(['temperature', 'vibration', 'pressure'])
         if metric == 'temperature':
@@ -39,6 +40,7 @@ message_count = 0
 print("Starting to emit sensor readings...")
 print("(10 machines × 3 metrics = 30 messages per second)\n")
 
+# continuously streams sensor data to Kafka
 try:
     while True:
         for machine_id in MACHINES:
