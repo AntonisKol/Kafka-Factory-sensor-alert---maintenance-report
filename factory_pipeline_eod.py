@@ -1,10 +1,3 @@
-"""
-Airflow EOD DAG:
-- Task 1: Run dbt models (refresh aggregations)
-- Task 2: Send email report with summary
-- Scheduled: Daily at 23:00 (11 PM)
-"""
-
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator

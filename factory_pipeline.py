@@ -1,11 +1,3 @@
-"""
-File: dags/factory_pipeline.py
-
-Airflow DAG: Factory Sensor Maintenance Pipeline
-Schedule: Every 15 minutes
-Task: Python consumer polls Kafka, saves batch to JSON files
-"""
-
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta

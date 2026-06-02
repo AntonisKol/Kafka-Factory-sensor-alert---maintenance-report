@@ -1,10 +1,3 @@
-"""
-- Query dbt models and send EOD email report
-- Get alert frequency summary
-- Get machine uptime percentages
-- Format and send email
-"""
-
 import snowflake.connector
 import os
 import smtplib
