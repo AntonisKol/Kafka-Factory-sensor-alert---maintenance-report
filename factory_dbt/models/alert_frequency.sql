@@ -7,7 +7,7 @@ SELECT
     MAX(timestamp) as last_alert
 FROM {{ source('raw', 'alerts') }}
 WHERE is_anomaly = TRUE
-GROUP BY 1, 2
+GROUP BY 1, 2 -- <- group by machine_id and metric_name
 ORDER BY alert_count DESC, 1, 2
 
 -- Count anomalies per machine and metric
