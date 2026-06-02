@@ -10,20 +10,22 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 SNOWFLAKE_CONFIG = {
-    'account': 'YOUR_SNOWFLAKE_ACCOUNT',
-    'user': 'YOUR_SNOWFLAKE_USER',
-    'password': os.environ.get('SNOWFLAKE_PASSWORD'),
-    'warehouse': 'DEV_LOADING_WH',
-    'database': 'KAFKA_DEMO',
-    'schema': 'DBT_MODELS',
-    'role': 'ACCOUNTADMIN'
+    'account': os.getenv('SNOWFLAKE_ACCOUNT'),
+    'user': os.getenv('SNOWFLAKE_USER'),
+    'password': os.getenv('SNOWFLAKE_PASSWORD'), 
+    'warehouse': os.getenv('SNOWFLAKE_WAREHOUSE'),
+    'database': os.getenv('SNOWFLAKE_DATABASE'),
+    'schema': os.getenv('SNOWFLAKE_SCHEMA'),
 }
 
-
 EMAIL_SENDER = 'sender@example.com'
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD') 
 EMAIL_RECIPIENT = 'recipient@example.com'
 
 def get_alert_summary():
@@ -33,7 +35,7 @@ def get_alert_summary():
     
     cursor.execute("""
         SELECT machine_id, metric_name, alert_count, last_alert
-        FROM alert_frequency
+        FROM DBT_MODELS.alert_frequency
         ORDER BY alert_count DESC
         LIMIT 10
     """)
@@ -49,7 +51,7 @@ def get_uptime_summary():
     
     cursor.execute("""
         SELECT machine_id, uptime_pct, anomaly_readings, total_readings
-        FROM machine_uptime_pct
+        FROM DBT_MODELS.machine_uptime_pct
         ORDER BY uptime_pct ASC
         LIMIT 10
     """)
@@ -109,7 +111,8 @@ def send_email(html_content):
     msg['Subject'] = 'Factory Maintenance Report - EOD'
     msg['From'] = EMAIL_SENDER
     msg['To'] = EMAIL_RECIPIENT
-    
+    msg.set_charset('utf-8')
+
     part = MIMEText(html_content, 'html')
     msg.attach(part)
     
@@ -117,7 +120,7 @@ def send_email(html_content):
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
-        server.sendmail(EMAIL_SENDER, EMAIL_RECIPIENT, msg.as_string())
+        server.sendmail(EMAIL_SENDER, EMAIL_RECIPIENT, msg.as_string(unixfrom=True).encode('utf-8'))
         server.quit()
         print("✓ Email sent successfully")
         return True
