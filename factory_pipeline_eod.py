@@ -2,6 +2,10 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
+import os
+
+# Folder holding the pipeline scripts and factory_dbt (defaults to this DAG's folder)
+PROJECT_DIR = os.getenv('FACTORY_PROJECT_DIR', os.path.dirname(os.path.abspath(__file__)))
 
 default_args = {
     'owner': 'data-eng',
@@ -26,7 +30,7 @@ def send_report():
 
 task_dbt = BashOperator(
     task_id='run_dbt', # ← dbt connects to Snowflake and runs all models to refresh data for the report
-    bash_command='cd /home/user/Desktop/Iron\ Hack/Kafka\ Factory\ sensor\ alert\ -\ maintenance\ report/factory_dbt && dbt run',
+    bash_command=f'cd "{PROJECT_DIR}/factory_dbt" && dbt run',
     dag=dag
 )
 
