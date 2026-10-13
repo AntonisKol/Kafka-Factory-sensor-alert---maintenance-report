@@ -32,7 +32,7 @@ def poll_kafka_to_json():
             msg_batch = consumer.poll(timeout_ms=5000, max_records=1000)
             
             if msg_batch:
-                for records in msg_batch.items():
+                for records in msg_batch.values():
                     for record in records:
                         readings.append(record.value)
                         
