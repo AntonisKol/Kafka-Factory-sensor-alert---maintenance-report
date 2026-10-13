@@ -6,7 +6,8 @@ from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 
 
-load_dotenv("/Users/mpe/Desktop/Iron Hack/Kafka Factory sensor alert - maintenance report/.env")
+# .env lives next to this script unless FACTORY_PROJECT_DIR points elsewhere
+load_dotenv(os.path.join(os.getenv('FACTORY_PROJECT_DIR', os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 SNOWFLAKE_CONFIG = {
     'account': os.getenv('SNOWFLAKE_ACCOUNT'),
@@ -17,9 +18,9 @@ SNOWFLAKE_CONFIG = {
     'schema': os.getenv('SNOWFLAKE_SCHEMA'),
 }
 
-EMAIL_SENDER = 'antonis.colovos@gmail.com'
+EMAIL_SENDER = os.getenv('EMAIL_SENDER')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD') 
-EMAIL_RECIPIENT = 'antonisk@gmx.net'
+EMAIL_RECIPIENT = os.getenv('EMAIL_RECIPIENT')
 
 def get_alert_summary():
     """Get top alert anomalies from dbt model"""
