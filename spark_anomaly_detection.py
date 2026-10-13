@@ -26,27 +26,30 @@ print(f"Read {df.count()} records from {latest_file}")
 df = df.withColumn('timestamp', col('timestamp').cast('timestamp'))
 
 # Defined window that separates data into independent groups
+# Ordered by epoch seconds so the range covers the last 5 minutes of readings
 window_spec = Window.partitionBy('machine_id', 'metric_name') \
-    .orderBy(col('timestamp')) \
-    .rowsBetween(-100, 0)  # Last 100 rows (approximately 5 min)
+    .orderBy(col('timestamp').cast('long')) \
+    .rangeBetween(-300, 0)
 
 df_with_rolling = df.withColumn(
     'rolling_avg_5min',
     avg('value').over(window_spec)
 )
 
-# Flag anomalies
+# Flag anomalies on each reading's own value. A single spike barely moves
+# the rolling average, so checking the average would almost never trip.
+# rolling_avg_5min is kept as context for the alert.
 df_flagged = df_with_rolling.withColumn(
     'is_anomaly',
     when(col('metric_name') == 'temperature',
-         (col('rolling_avg_5min') > THRESHOLDS['temperature']['max']) |
-         (col('rolling_avg_5min') < THRESHOLDS['temperature']['min'])
+         (col('value') > THRESHOLDS['temperature']['max']) |
+         (col('value') < THRESHOLDS['temperature']['min'])
     ).when(col('metric_name') == 'vibration',
-         (col('rolling_avg_5min') > THRESHOLDS['vibration']['max']) |
-         (col('rolling_avg_5min') < THRESHOLDS['vibration']['min'])
+         (col('value') > THRESHOLDS['vibration']['max']) |
+         (col('value') < THRESHOLDS['vibration']['min'])
     ).when(col('metric_name') == 'pressure',
-         (col('rolling_avg_5min') > THRESHOLDS['pressure']['max']) |
-         (col('rolling_avg_5min') < THRESHOLDS['pressure']['min'])
+         (col('value') > THRESHOLDS['pressure']['max']) |
+         (col('value') < THRESHOLDS['pressure']['min'])
     ).otherwise(False)
 )
 
