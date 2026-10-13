@@ -4,14 +4,17 @@ import pandas as pd
 import glob
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.getenv('FACTORY_PROJECT_DIR', os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 SNOWFLAKE_CONFIG = {
-    'account': 'GCWFKTK-JR15161',
-    'user': 'ANTONIS',
-    'password': os.environ.get('SNOWFLAKE_PASSWORD'),  
+    'account': os.getenv('SNOWFLAKE_ACCOUNT'),
+    'user': os.getenv('SNOWFLAKE_USER'),
+    'password': os.getenv('SNOWFLAKE_PASSWORD'),  
     'warehouse': 'DEV_LOADING_WH',
     'database': 'KAFKA_DEMO',
-    'schema': 'ACCOUNTADMIN'
+    'schema': 'PUBLIC' # <- must match the dbt sources in factory_dbt/models/sources.yml
 }
 
 def connect_snowflake():
@@ -37,21 +40,27 @@ def load_raw_readings(conn):
     with open(latest_file, 'r') as f:
         lines = f.readlines()
     
-    cursor = conn.cursor()
-    count = 0
-    
+    rows = []
     for line in lines:
         try:
             record = json.loads(line)
-            cursor.execute(
-                "INSERT INTO raw_readings (timestamp, machine_id, metric_name, value) "
-                "VALUES (%s, %s, %s, %s)",
-                (record['timestamp'], record['machine_id'], 
-                 record['metric_name'], record['value'])
-            )
-            count += 1
+            rows.append((record['timestamp'], record['machine_id'],
+                         record['metric_name'], record['value']))
         except Exception as e:
-            print(f"  Error loading record: {e}")
+            print(f"  Skipping bad record: {e}")
+
+    if not rows:
+        print("⚠ No valid raw readings to load")
+        return 0
+
+    # executemany batches the rows into multi-row INSERTs instead of one round trip per row
+    cursor = conn.cursor()
+    cursor.executemany(
+        "INSERT INTO raw_readings (timestamp, machine_id, metric_name, value) "
+        "VALUES (%s, %s, %s, %s)",
+        rows
+    )
+    count = len(rows)
     
     conn.commit()
     print(f"✓ Loaded {count} raw readings to Snowflake")
@@ -72,20 +81,23 @@ def load_alerts(conn):
     # Convert timestamp to string
     df['timestamp'] = df['timestamp'].astype(str)
     
-    cursor = conn.cursor()
-    count = 0
+    rows = [
+        (row['timestamp'], row['machine_id'], row['metric_name'],
+         float(row['value']), float(row['rolling_avg_5min']), bool(row['is_anomaly']))
+        for _, row in df.iterrows()
+    ]
     
-    for _, row in df.iterrows():
-        try:
-            cursor.execute(
-                "INSERT INTO alerts (timestamp, machine_id, metric_name, value, rolling_avg_5min, is_anomaly) "
-                "VALUES (%s, %s, %s, %s, %s, %s)",
-                (row['timestamp'], row['machine_id'], row['metric_name'],
-                 float(row['value']), float(row['rolling_avg_5min']), bool(row['is_anomaly']))
-            )
-            count += 1
-        except Exception as e:
-            print(f"  Error loading alert: {e}")
+    if not rows:
+        print("✓ No alerts to load")
+        return 0
+    
+    cursor = conn.cursor()
+    cursor.executemany(
+        "INSERT INTO alerts (timestamp, machine_id, metric_name, value, rolling_avg_5min, is_anomaly) "
+        "VALUES (%s, %s, %s, %s, %s, %s)",
+        rows
+    )
+    count = len(rows)
     
     conn.commit()
     print(f"✓ Loaded {count} alerts to Snowflake")
